@@ -60,7 +60,7 @@ function initShaders() {
 
 //Fonction initialisant les attributs pour l'affichage (position et taille)
 function initAttributes() {
-
+  console.log(gl.getAttribLocation(program, "position"));
 }
 
 //Fonction permettant le dessin dans le canvas
@@ -71,6 +71,7 @@ function draw() {
 function main() {
     initContext();
     initShaders();
+    initAttributes();
     gl.clear(gl.COLOR_BUFFER_BIT);
     draw();
 }

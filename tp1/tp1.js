@@ -30,7 +30,7 @@ function initContext() {
 
 //Initialisation des shaders et du program
 function initShaders() {
-  var vertexSrc = loadText("shader.glsl");
+  var vertexSrc = loadText("vertex.glsl");
   var fragmentSrc = loadText("fragment.glsl");
 
   var vertex = gl.createShader(gl.VERTEX_SHADER);
@@ -60,7 +60,8 @@ function initShaders() {
 
 //Fonction initialisant les attributs pour l'affichage (position et taille)
 function initAttributes() {
-  console.log(gl.getAttribLocation(program, "position"));
+  var attrib = gl.getAttribLocation(program, "position");
+  gl.vertexAttrib2f(attrib, 0.5, 0.5);
 }
 
 //Fonction permettant le dessin dans le canvas

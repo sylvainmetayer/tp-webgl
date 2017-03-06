@@ -26,6 +26,7 @@ var tx = 0;
 var ty = 0;
 var scale = 1;
 var angle = 0;
+var matrice;
 
 //Uniforms
 var uTranslation;
@@ -82,14 +83,12 @@ function initAttributes() {
     attribPos = gl.getAttribLocation(program, "position");
     attribColor = gl.getAttribLocation(program, "color");
 
-    uTranslation = gl.getUniformLocation(program, "translation");
-    uAngle = gl.getUniformLocation(program, "angle");
+    //uTranslation = gl.getUniformLocation(program, "translation");
+    //uAngle = gl.getUniformLocation(program, "angle");
+    uMatrice = gl.getUniformLocation(program, "matrix");
     gl.enableVertexAttribArray(attribPos);
     gl.enableVertexAttribArray(attribColor);
-
 }
-
-
 
 //Initialisation des buffers
 function initBuffers() {
@@ -120,22 +119,23 @@ function draw() {
     time+=0.01;
     gl.clear(gl.COLOR_BUFFER_BIT);
 
+    matrice = mat4.create();
+
+    // Pour faire demi-tour
+    var x = (time%4 < 2) ? -1 +time % 4 : 1-(time%4 - 2.0);
+    mat4.translate(matrice, matrice, [x,0,0]); // On ne se déplace que sur x
+
     angle = time % (2*3.14);
+    mat4.rotate(matrice, matrice, angle, [0,0, 1]); // On ne tourne que sur z
 
-    //Permet de "rebondir" sur les bords
-    tx = (time%4 < 2) ? -1 +time % 4 : 1-(time%4 - 2.0);
-
-    gl.uniform1f(uAngle, angle);
-    gl.uniform1f(uTranslation, tx);
+    gl.uniformMatrix4fv(uMatrice, false, matrice);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.vertexAttribPointer(attribPos, 2, gl.FLOAT, true, 0, 0);
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferColor);
     gl.vertexAttribPointer(attribColor, 4, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-
 }
-
 
 function main() {
     initContext();

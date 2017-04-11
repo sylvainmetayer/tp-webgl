@@ -61,11 +61,9 @@ for (var i = 1; i < images.length; i++) {
 	);
 }
 
-console.log(scene.children[0]);
-
 camera.position.z = 35;
 function render() {
-	requestAnimationFrame( render );
+console.log(scene.children);	requestAnimationFrame( render );
 	scene.children[0].rotation.x += 0.05;
 	scene.children[0].rotation.y += 0.05;
 
